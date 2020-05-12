@@ -34,7 +34,9 @@
       "test": "react-scripts test",
       "eject": "react-scripts eject",
       "format-with-prettier": "prettier --write src/**/*.{ts,tsx}",
-      "cypress-open-integration": "cypress run --spec 'cypress/integration/*'",
+      "cypress-open-integration": "cypress open --config-file cypress/cypress-integration.json",
+      "cypress-open-e2e": "cypress open --config-file cypress/cypress-e2e.json",
+
       "version": "auto-changelog -p && git add CHANGELOG.md",
       "husky:pre-commit": "yarn pretty-quick --staged"
     },
