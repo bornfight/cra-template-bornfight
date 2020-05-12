@@ -17,6 +17,7 @@
       "@types/jest": "^24.0.0",
       "auto-changelog": "^2.0.0",
       "react-redux": "^7.2.0",
+      "require-context.macro": "^1.2.2",
       "typescript": "~3.8.2",
       "cypress": "^4.5.0",
       "cypress-plugin-tab": "^1.0.5",
@@ -36,7 +37,7 @@
       "format-with-prettier": "prettier --write src/**/*.{ts,tsx}",
       "cypress-open-integration": "cypress open --config-file cypress/cypress-integration.json",
       "cypress-open-e2e": "cypress open --config-file cypress/cypress-e2e.json",
-
+      "storybook": "start-storybook -p 9002 -c .storybook",
       "version": "auto-changelog -p && git add CHANGELOG.md",
       "husky:pre-commit": "yarn pretty-quick --staged"
     },
