@@ -35,12 +35,7 @@
   "devDependencies": {
     "@babel/preset-env": "^7.7.6",
     "@babel/preset-react": "^7.7.4",
-    "@bornfight/prettier": "^1.0.0.",
-    "@commitlint/cli": "^8.3.5",
-    "@commitlint/config-conventional": "^8.3.4",
     "@reduxjs/toolkit": "^1.2.5",
-    "@storybook/react": "^5.3.18",
-    "@storybook/preset-typescript": "^3.0.0",
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.3.2",
     "@types/jest": "^24.0.0",
@@ -48,13 +43,9 @@
     "@types/react": "^16.9.21",
     "@types/react-dom": "^16.9.5",
     "@types/react-redux": "^7.1.7",
-    "auto-changelog": "^2.0.0",
     "babel-eslint": "^10.0.3",
     "babel-jest": "^24.9.0",
-    "cypress": "^4.5.0",
-    "cypress-plugin-tab": "^1.0.5",
     "eslint": "^6.7.2",
-    "eslint-plugin-cypress": "^2.10.3",
     "eslint-config-react-app": "^5.1.0",
     "eslint-plugin-flowtype": "^4.5.2",
     "eslint-plugin-import": "^2.18.2",
@@ -62,37 +53,12 @@
     "eslint-plugin-prettier": "^3.1.1",
     "eslint-plugin-react": "^7.17.0",
     "eslint-plugin-react-hooks": "^2.3.0",
-    "husky": "^4.2.5",
-    "jest": "^24.9.0",
-    "lint-staged": "^10.2.2",
-    "prettier": "@bornfight/prettier",
     "react": "^16.12.0",
     "react-dom": "^16.12.0",
-    "react-router": "5.2.0",
-    "react-router-dom": "^5.2.0",
     "react-redux": "^7.2.0",
     "react-scripts": "^3.4.0",
     "react-test-renderer": "^16.12.0",
     "redux": "^4.0.4",
     "typescript": "~3.8.2"
-  },
-  "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject",
-    "format-with-prettier": "prettier --write src/**/*.{ts,tsx}",
-    "cypress-open-integration": "cypress run --spec 'cypress/integration/*'",
-    "version": "auto-changelog -p && git add CHANGELOG.md",
-    "husky:pre-commit": "yarn pretty-quick --staged"
-  },
-  "husky": {
-    "hooks": {
-      "pre-commit": "yarn husky:pre-commit",
-      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
-    }
-  },
-  "lint-staged": {
-    "*.{js,jsx,ts,tsx,md,html,css}": "prettier --write"
   }
 }

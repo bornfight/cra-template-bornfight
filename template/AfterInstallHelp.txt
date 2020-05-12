@@ -1,0 +1,1 @@
+1. Move commintlint.config.js file to root of the newly created project
