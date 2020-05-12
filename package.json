@@ -1,5 +1,5 @@
 {
-  "name": "cra-template-redux-typescript",
+  "name": "cra-template-bornfight",
   "version": "1.0.1",
   "scripts": {
     "prettify": "prettier --trailing-comma es5 --single-quote --write './template/src/**/*.{ts,tsx}'",
@@ -15,7 +15,7 @@
     "reduxjs",
     "react-redux"
   ],
-  "description": "Bornfight's custom Create React App",
+  "description": "Bornfight's custom Create React App template",
   "main": "template.json",
   "repository": {
     "type": "git",
