@@ -64,6 +64,7 @@
     "eslint-plugin-react-hooks": "^2.3.0",
     "husky": "^4.2.5",
     "jest": "^24.9.0",
+    "lint-staged": "^10.2.2",
     "prettier": "@bornfight/prettier",
     "react": "^16.12.0",
     "react-dom": "^16.12.0",
@@ -90,5 +91,8 @@
       "pre-commit": "yarn husky:pre-commit",
       "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
     }
+  },
+  "lint-staged": {
+    "*.{js,jsx,ts,tsx,md,html,css}": "prettier --write"
   }
 }
