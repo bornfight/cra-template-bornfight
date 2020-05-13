@@ -1,5 +1,4 @@
 {
-    "projectId": "rqdhjf2",
     "baseUrl": "http://localhost:3000",
     "COMMENT:numTestsKeptInMemory": "to prevent chrome crashing after large snapshots - default is 30",
     "numTestsKeptInMemory": 2,
