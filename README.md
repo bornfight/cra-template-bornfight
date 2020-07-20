@@ -1,3 +1,12 @@
+# cra-template-bornfight
+
+Since the template is not yet published on NPM use the following command to create the app template.
+
+`
+yarn create react-app app-test —template git+ssh://git@github.com:bornfight/cra-template-bornfight
+`
+
+
 # cra-template-redux-typescript
 
 The official Redux+TS template for [Create React App](https://github.com/facebook/create-react-app).
