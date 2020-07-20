@@ -3,7 +3,7 @@
 Since the template is not yet published on NPM use the following command to create the app template.
 
 `
-yarn create react-app app-test —template git+ssh://git@github.com:bornfight/cra-template-bornfight
+yarn create react-app app-test -—template file:"pathToLocalRepository"
 `
 
 
