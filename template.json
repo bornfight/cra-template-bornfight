@@ -43,11 +43,10 @@
       "cypress-open-e2e": "cypress open --config-file cypress/cypress-e2e.json",
       "storybook": "start-storybook -p 9002 -c .storybook",
       "version": "auto-changelog -p && git add CHANGELOG.md",
-      "husky:pre-commit": "yarn pretty-quick --staged"
     },
     "husky": {
       "hooks": {
-        "pre-commit": "yarn husky:pre-commit",
+        "pre-commit": "pretty-quick --staged",
         "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
       }
     },
