@@ -11,7 +11,7 @@ function loadStories() {
 
 configure(loadStories, module);
 
-import "../src/App.css";
+import "template/src/root/App.module.scss";
 
 // Don't add global decorator for store because in certain stories store has default value!
 // use stories/decorators/StoreProviderDecorator.tsx for decorating stories that need redux
