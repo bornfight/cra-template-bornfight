@@ -1,0 +1,123 @@
+#!/usr/bin/env groovy
+
+@Library('Utility@refactor') _
+pipeline {
+    agent { label 'your_jenkins_agent_name' }
+    environment {
+        PORT=findPort()
+    }
+    parameters {
+        choice choices: ['staging', 'production'], description: 'The environment where you wish to deploy. Triggers only on tag builds.', name: 'DEPLOY_ENV'
+    }
+    stages {
+        stage('Integration') {
+            when {
+                not {
+                    buildingTag()
+                }
+            }
+            stages {
+                stage('Dependency installation') {
+                    steps {
+                        sh 'yarn install'
+                    }
+                }
+                stage('Unit tests') {
+                    steps {
+                       sh 'yarn ci:test'
+                    }
+                }
+                stage('Cypress integration tests') {
+                    environment {
+                        CYPRESS_BASE_URL="http://localhost:${PORT}"
+                    }
+                    steps {
+                        sh "./node_modules/.bin/start-server-and-test 'start:coverage' http-get://localhost:${PORT} 'cypress:run:integration'"
+                    }
+                    post {
+                        always {
+                            step([
+                                $class: 'CloverPublisher',
+                                cloverReportDir: 'coverage/',
+                                cloverReportFileName: 'clover.xml',
+                                healthyTarget: [methodCoverage: 100, conditionalCoverage: 100, statementCoverage: 100],
+                                unhealthyTarget: [methodCoverage: 100, conditionalCoverage: 100, statementCoverage: 100],
+                                failingTarget: [methodCoverage: 100, conditionalCoverage: 100, statementCoverage: 100],
+                            ])
+                            publishHTML([
+                                allowMissing: false,
+                                alwaysLinkToLastBuild: false,
+                                keepAll: false,
+                                reportDir: 'coverage/lcov-report',
+                                reportFiles: 'index.html',
+                                reportName: 'Cypress integration report',
+                                reportTitles: 'Coverage'
+                            ])
+                            archiveArtifacts 'cypress/videos/**'
+                        }
+                    }
+                }
+            }
+        }
+        stage('Deploy app') {
+            when {
+                anyOf {
+                    buildingTag()
+                    branch 'master'
+                }
+            }
+            environment {
+                DEPLOY_ENV = setDeployEnv "${DEPLOY_ENV}"
+            }
+            steps {
+                withCredentials([[$class: 'AmazonWebServicesCredentialsBinding', accessKeyVariable: 'AWS_ACCESS_KEY_ID', credentialsId: 'id', secretKeyVariable: 'AWS_SECRET_ACCESS_KEY']]) {
+                    sh 'yarn install'
+                    sh 'yarn run build:${DEPLOY_ENV}'
+                    sh "aws s3 sync s3://config.myapp/${DEPLOY_ENV} ."
+                    sh "aws s3 cp --recursive build/ s3://app.${DEPLOY_ENV}.myapp --acl public-read"
+                }
+            }
+            post {
+                success {
+                    configFileProvider([configFile(fileId: 'fileId', targetLocation: 'credentials.json')]) {
+                        updateTag "tagId", readFile("credentials.json"), "${env.GIT_URL}", "${env.DEPLOY_ENV}", "${env.TAG_NAME}"
+                    }
+                    slackSend color: 'good', message: "[project name] ${env.DEPLOY_ENV} deployed!"
+                }
+                unsuccessful {
+                    slackSend color: 'danger', message: "[project name] Failed to deploy ${env.DEPLOY_ENV}"
+                }
+            }
+        }
+
+        stage('Build and deploy storybook') {
+            when {
+                allOf {
+                    branch 'master'
+                    changeset '.storybook/**'
+                }
+            }
+            steps {
+                sh 'yarn install'
+                sh 'yarn run storybook:build'
+                withCredentials([[$class: 'AmazonWebServicesCredentialsBinding', accessKeyVariable: 'AWS_ACCESS_KEY_ID', credentialsId: 'id', secretKeyVariable: 'AWS_SECRET_ACCESS_KEY']]) {
+                    sh "aws s3 cp --recursive .storybook-build/ s3://storybook.myapp --acl public-read"
+                }
+            }
+        }
+        stage('Cypress e2e tests') {
+            when {
+                branch 'master'
+            }
+            steps {
+                build '/MyApp/E2E Tests'
+            }
+        }
+    }
+    options {
+        timeout(20)
+        disableConcurrentBuilds()
+        ansiColor('xterm')
+        timestamps()
+    }
+}
